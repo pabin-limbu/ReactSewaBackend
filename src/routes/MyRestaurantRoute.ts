@@ -1,3 +1,6 @@
+// This route belong only to the logedin user.
+
+
 import express from "express";
 import multer from "multer";
 import MyRestaurantController from "../controllers/MyRestaurantController";
