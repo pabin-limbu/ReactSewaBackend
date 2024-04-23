@@ -1,9 +1,16 @@
-import mongoose from "mongoose";
+import mongoose, { InferSchemaType } from "mongoose";
 
 const menuItemSchema = new mongoose.Schema({
+  _id: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    default: () => new mongoose.Types.ObjectId(),// default is required since we are overriding the default behavior.
+  },
   name: { type: String, required: true },
   price: { type: Number, required: true },
 });
+
+export type MenuItemType = InferSchemaType<typeof menuItemSchema>;
 
 // menuItem schema will be seperate but will be embaded in resturant Schema. this will create seperate ids for menu item which call help while checkout.
 

@@ -16,4 +16,12 @@ router.get(
   RestaurantController.searchRestaurants
 );
 
+
+
+router.get("/:restaurantId",param("restaurantId")
+.isString()
+.trim()
+.notEmpty()
+.withMessage("restaurant ID must be a valid String"),RestaurantController.getRestaurant)
+
 export default router;

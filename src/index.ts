@@ -5,6 +5,7 @@ import mongoose from "mongoose";
 import myUserRoute from "./routes/MyUserRoute";
 import myRestaurantRoute from "./routes/MyRestaurantRoute";
 import restaurantRoute from "./routes/RestaurantRoute";
+import orderRoute from "./routes/OrderRoute";
 import { v2 as cloudinary } from "cloudinary"; // v2 means the version 2 of the api.
 
 mongoose
@@ -19,15 +20,16 @@ cloudinary.config({
 });
 
 const app = express(); // create express server.
-app.use(express.json()); // use middleware to parse every incoming request to json.
 app.use(cors());
-
+app.use("/api/order/checkout/webhook", express.raw({ type: "*/*" })); // in order for stripe to validate the data it need raw data.
+app.use(express.json()); // use middleware to parse every incoming request to json.
 app.get("/health", async (req: Request, res: Response) => {
   res.send({ message: "health ok!" }); // the convention to check if the server is running .
 });
 app.use("/api/my/user", myUserRoute);
 app.use("/api/my/restaurant", myRestaurantRoute);
 app.use("/api/restaurant", restaurantRoute);
+app.use("/api/order", orderRoute);
 
 app.listen(7000, () => {
   console.log("Server started on localhost:7000");
