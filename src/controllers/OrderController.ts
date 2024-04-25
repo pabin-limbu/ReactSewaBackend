@@ -23,6 +23,20 @@ type CheckoutSessionRequest = {
   restaurantId: string;
 };
 
+const getMyOrders = async (req: Request, res: Response) => {
+  try {
+    const orders = await Order.find({ user: req.userId })
+      .populate("restaurant")
+      .populate("user");
+    // This will add both the user and the restaurant in the orders while fetching because order has the references to it.
+
+    res.json(orders);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "something went wrong" });
+  }
+};
+
 const stripeWebhookhandler = async (req: Request, res: Response) => {
   // console.log("RECEIVED EVENT");
   // console.log("----------------------");
@@ -185,4 +199,5 @@ const createSession = async (
 export default {
   createCheckoutSession,
   stripeWebhookhandler,
+  getMyOrders,
 };
